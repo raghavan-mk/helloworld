@@ -17,6 +17,9 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet(Name = "GetMovies")]
-    public IAsyncEnumerable<Movie> Get() => movieDAL.GetMovies();
-    
+    public async IAsyncEnumerable<Movie> Get()
+    {
+        await foreach (var m in movieDAL.GetMovies())
+            yield return m;
+    }
 }
