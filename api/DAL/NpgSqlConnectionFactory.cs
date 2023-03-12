@@ -1,7 +1,4 @@
-using System.Data;
-using System.Data.Common;
 using Npgsql;
-
 public class NpgSqlConnectionFactory
 {    
     private readonly string connectionString;
