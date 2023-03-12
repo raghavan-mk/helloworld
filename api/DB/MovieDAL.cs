@@ -12,7 +12,7 @@ public class MovieDAL
         this.configuration = configuration;
     }
 
-    public IEnumerable<Movie> GetMovies()
+    public async IAsyncEnumerable<Movie> GetMovies()
     {
         var cs = configuration.GetConnectionString("pgpsql");
 
@@ -21,17 +21,16 @@ public class MovieDAL
         using var connection = new NpgsqlConnection(cs);
         connection.Open();
         using var command = new NpgsqlCommand(selectQuery, connection);
-        using var reader = command.ExecuteReader();        
-        while (reader.Read())
+        using var reader = await command.ExecuteReaderAsync();        
+        while (await reader.ReadAsync())
         {
-            var m = new Movie
+            yield return new Movie
             {
                 Id = reader.GetInt32(0),
                 Name = reader.GetString(1),
                 Year = reader.GetInt32(2),
                 Genre = reader.GetString(3)
             };
-            yield return m;
         }
     }
 }
