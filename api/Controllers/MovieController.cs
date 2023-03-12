@@ -6,16 +6,15 @@ namespace HelloWorld.Controllers;
 [Route("[controller]")]
 public class MovieController : ControllerBase
 {
+    private readonly ILogger<MovieController> _logger;    
+    private readonly MovieRepository movieRepository;
 
-    private readonly ILogger<MovieController> _logger;
-    private readonly MovieRepository movieDAL;
-
-    public MovieController(ILogger<MovieController> logger, MovieRepository movieDAL)
+    public MovieController(ILogger<MovieController> logger, MovieRepository movieRepository)
     {
-        _logger = logger;
-        this.movieDAL = movieDAL;
+        _logger = logger;        
+        this.movieRepository = movieRepository;
     }
 
     [HttpGet(Name = "GetMovies")]
-    public IAsyncEnumerable<Movie> Get() => movieDAL.GetMovies();
+    public IAsyncEnumerable<Movie> Get() => movieRepository.GetMovies();
 }
