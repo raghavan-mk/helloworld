@@ -7,7 +7,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<MovieDAL>();
+builder.Services.AddSingleton<NpgSqlConnectionFactory>();
+builder.Services.AddScoped<MovieRepository>();
 
 var app = builder.Build();
 

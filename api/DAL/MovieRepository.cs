@@ -1,27 +1,25 @@
 using HelloWorld;
 using Npgsql;
 
-public class MovieDAL
+public class MovieRepository
 {
-    private readonly ILogger<MovieDAL> logger;
-    private readonly IConfiguration configuration;
+    private readonly ILogger<MovieRepository> logger;
+    private readonly NpgSqlConnectionFactory npgSqlConnectionFactory;
 
-    public MovieDAL(ILogger<MovieDAL> logger, IConfiguration configuration)
+    public MovieRepository(ILogger<MovieRepository> logger, NpgSqlConnectionFactory npgSqlConnectionFactory)
     {
         this.logger = logger;
-        this.configuration = configuration;
+        this.npgSqlConnectionFactory = npgSqlConnectionFactory;
     }
 
     public async IAsyncEnumerable<Movie> GetMovies()
     {
-        var cs = configuration.GetConnectionString("pgpsql");
-
         var selectQuery = "SELECT Id,\"Name\",\"Year\",Genre FROM Movie order by Id";
 
-        using var connection = new NpgsqlConnection(cs);
-        connection.Open();
+        using var connection = npgSqlConnectionFactory.CreateConnection();
+        await connection.OpenAsync();
         using var command = new NpgsqlCommand(selectQuery, connection);
-        using var reader = await command.ExecuteReaderAsync();        
+        using var reader = await command.ExecuteReaderAsync();
         while (await reader.ReadAsync())
         {
             yield return new Movie

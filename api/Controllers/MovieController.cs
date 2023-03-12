@@ -8,9 +8,9 @@ public class MovieController : ControllerBase
 {
 
     private readonly ILogger<MovieController> _logger;
-    private readonly MovieDAL movieDAL;
+    private readonly MovieRepository movieDAL;
 
-    public MovieController(ILogger<MovieController> logger, MovieDAL movieDAL)
+    public MovieController(ILogger<MovieController> logger, MovieRepository movieDAL)
     {
         _logger = logger;
         this.movieDAL = movieDAL;
