@@ -25,9 +25,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseEndpoints(e =>
+{
+    e.MapGet("/", async ctxt =>
+    {
+        ctxt.Response.Redirect("/movie");
+    });
+});
 
 app.Run();
